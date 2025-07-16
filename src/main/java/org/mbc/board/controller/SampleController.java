@@ -75,6 +75,10 @@ public class SampleController {
         model.addAttribute("dto", sampleDTO); //74행에 만들어진 객체값
         //리턴타입이 void /resources/templates/ex/ex2.html
     }
-
+    @GetMapping("/ex/ex3")//http://192.168.111.105/ex/ex3-> /resources/templates/ex/ex3.html
+    public void ex3(Model model){
+        log.info("SampleController.ex3메서드 실행.....");
+        model.addAttribute("arr",new String[]{"전민기,김진우, 전혜진,"});
+    }
 
 }
