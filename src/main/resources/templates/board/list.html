@@ -2,13 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/basic.html}">
-<!--상단에 layout:decorator="~{layout/layout}" 은 기본 레이아웃을 layout/layout.html 파일을 사용하겠다라는 선언하는 것 입니다.-->
-
-
 <!--     상단에 layout:decorator="~{layout/layout}" 은 기본 레이아웃을 layout/layout.html 파일을 사용하겠다라는 선언하는 것 입니다.-->
 <div layout:fragment="content">
-    <!-- debug -->
-  <!--  <p th:if="${modalMessage}" style="color:red;">모달 메시지 있음: [[${modalMessage}]]</p>-->
+
     <div class="row mt-3">
         <form action="/board/list" method="get">
             <div class="col">
@@ -33,7 +29,6 @@
                 </div>
             </div>
 
-
             <div class="card">
                 <div class="card-header">
                     Board List
@@ -54,10 +49,12 @@
                         <tbody th:with="link = ${pageRequestDTO.getLink()}">
 
                         <tr th:each="dto:${responseDTO.dtoList}"  >
-                            <!--/*    for문이고 dto라는 변수에 list객체를 담는다.  */-->
+                        <!--/*    for문이고 dto라는 변수에 list객체를 담는다.  */-->
                             <th scope="row">[[${dto.bno}]]</th>
                             <td>
-                                <a th:href="|@{/board/read(bno =${dto.bno})}&${link}|"> [[${dto.title}]] </a>
+                                <a th:href="|@{/board/read(bno =${dto.bno})}&${link}|" class="text-decoration-none"> [[${dto.title}]] </a>
+                                <!--댓글 수 출력용 코드 p549-->
+                                <span class="badge progress-bar-success" style="background-color: #c5d7f2">[[${dto.replyCount}]]</span>
                             </td>
                             <td>[[${dto.writer}]]</td>
                             <td>[[${#temporals.format(dto.regDate, 'yyyy-MM-dd')}]]</td>
@@ -70,15 +67,15 @@
                     <div class="float-end">
                         <ul class="pagination flex-wrap">
 
-                            <!-- For문으로 받아온 객체값 자바스크립트 변수에 넣어주기
-                            예) tr 태그 클릭시 화면이동 하고 싶을때, 특정 변수를 파라미터로 받아 값을 넘겨줄때!
-                            th:data 다음엔 아무이름이나 정해주면 된다. ( *th:data-별칭 ) 그리고 getAttribute로 loadDetailView 함수 파라미터에 값을 넣어준다.
+                        <!-- For문으로 받아온 객체값 자바스크립트 변수에 넣어주기
+                        예) tr 태그 클릭시 화면이동 하고 싶을때, 특정 변수를 파라미터로 받아 값을 넘겨줄때!
+                        th:data 다음엔 아무이름이나 정해주면 된다. ( *th:data-별칭 ) 그리고 getAttribute로 loadDetailView 함수 파라미터에 값을 넣어준다.
 
-                            th:data-index="${user.index}"
-                                th:onclick="loadDetailView(this.getAttribute('data-index'))">
-                                    <td th:text="${user.index}">1</td>
-                                    <td th:text="${user.name}">Brian</td>
-                            -->
+                        th:data-index="${user.index}"
+                            th:onclick="loadDetailView(this.getAttribute('data-index'))">
+                                <td th:text="${user.index}">1</td>
+                                <td th:text="${user.name}">Brian</td>
+		                -->
 
                             <li class="page-item" th:if="${responseDTO.prev}">
                                 <a class="page-link" th:data-num="${responseDTO.start -1}">Previous</a>
@@ -107,7 +104,9 @@
                 </div><!--end card body-->
             </div><!--end card-->
         </form>
-    </div><!-- end col-->
+        </div><!-- end col-->
+
+    </div><!-- end row-->
 
     <!--   모달창 용 -->
     <div class="modal" tabindex="-1">
@@ -118,8 +117,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p th:text="${modalMessage}">Modal body text goes here.</p>
-
+                    <p>Modal body text goes here.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -127,14 +125,10 @@
                 </div>
             </div>
         </div>
-    </div> <!--모달창이 -layout:fragment 안에 존재해야 모달창이 뜬다.->-->
-
-</div><!-- end row-->
+    </div>
 
 
-
-
-
+</div>
 
 <!--이벤트 처리 : 페이지 번호 클릭, 검색,필터링 조건-->
 <script layout:fragment="script" th:inline="javascript">
@@ -187,8 +181,7 @@
 
 
     //show modal
-    const result = [[${result}]];
-
+    const result = [[${result}]]
     // BoardController에 resulte = 게시물번호 처리용
     const modal = new bootstrap.Modal(document.querySelector(".modal")) // 112행 모달 처리
 

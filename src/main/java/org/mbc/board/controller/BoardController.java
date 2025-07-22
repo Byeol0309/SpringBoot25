@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.mbc.board.dto.BoardDTO;
+import org.mbc.board.dto.BoardListReplyCountDTO;
 import org.mbc.board.dto.PageRequestDTO;
 import org.mbc.board.dto.PageResponseDTO;
 import org.mbc.board.service.BoardService;
@@ -27,8 +28,12 @@ public class BoardController {
     public void list(PageRequestDTO pageRequestDTO, Model model){
         // 페이징 처리와 정렬과 검색이 추가된 리스트가 나옴.
 
-        PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
+        // p548 쪽 PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
         // 페이징 처리가 되는 요청을 처리하고 결과를 response로 받는다.
+
+        PageResponseDTO<BoardListReplyCountDTO> responseDTO =
+                boardService.listWithReply(pageRequestDTO);
+        // 댓글의 개수용 dto로 프론트 전달.
 
         log.info(responseDTO);
 
@@ -58,10 +63,8 @@ public class BoardController {
 
         Long bno  = boardService.register(boardDTO);
 
-        redirectAttributes.addFlashAttribute("modalMessage", "게시글이 등록되었습니다");
         redirectAttributes.addFlashAttribute("result", bno);
         // 정상 처리시 addFlashAttribute에 결과 정보를 bno를 담아 전달한다.
-
         return "redirect:/board/list";
     }
 
@@ -112,7 +115,7 @@ public class BoardController {
         boardService.modify(boardDTO);
 
         redirectAttributes.addFlashAttribute("result", "modified");
-        redirectAttributes.addFlashAttribute("modalMessage", "게시글이 수정되었습니다");
+
         redirectAttributes.addAttribute("bno", boardDTO.getBno());
 
         return "redirect:/board/read";
@@ -127,7 +130,7 @@ public class BoardController {
         boardService.remove(bno);
 
         redirectAttributes.addFlashAttribute("result", "removed");
-        redirectAttributes.addFlashAttribute("modalMessage", "게시글이 삭제되었습니다.");
+
         return "redirect:/board/list";
 
     }
