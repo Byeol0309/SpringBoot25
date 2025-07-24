@@ -53,8 +53,8 @@
                             <th scope="row">[[${dto.bno}]]</th>
                             <td>
                                 <a th:href="|@{/board/read(bno =${dto.bno})}&${link}|" class="text-decoration-none"> [[${dto.title}]] </a>
-                                <!--댓글 수 출력용 코드 p549-->
-                                <span class="badge progress-bar-success" style="background-color: #c5d7f2">[[${dto.replyCount}]]</span>
+                                <!-- 댓글 수 출력용 코드 p549-->
+                                <span class="badge progress-bar-success" style="background-color: #0a53be">[[${dto.replyCount}]]</span>
                             </td>
                             <td>[[${dto.writer}]]</td>
                             <td>[[${#temporals.format(dto.regDate, 'yyyy-MM-dd')}]]</td>

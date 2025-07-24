@@ -28,12 +28,12 @@ public class BoardController {
     public void list(PageRequestDTO pageRequestDTO, Model model){
         // 페이징 처리와 정렬과 검색이 추가된 리스트가 나옴.
 
-        // p548 쪽 PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
+        // p548쪽 제외PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
         // 페이징 처리가 되는 요청을 처리하고 결과를 response로 받는다.
 
         PageResponseDTO<BoardListReplyCountDTO> responseDTO =
-                boardService.listWithReply(pageRequestDTO);
-        // 댓글의 개수용 dto로 프론트 전달.
+                boardService.listWithReplyCount(pageRequestDTO);
+        // 댓글의 갯수용 dto로 프론트 전달!!
 
         log.info(responseDTO);
 

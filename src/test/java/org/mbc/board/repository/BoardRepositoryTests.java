@@ -291,13 +291,13 @@ public class BoardRepositoryTests {
 
     @Test
     public void testSearchReplyCount(){
-        String[] types = {"t", "c", "w"}; // 제목, 내용, 작성자
 
-        String keyword = "1";   // 제목이나 내용이나 작성자에 1값을 찾는다.
+        String[] types= {"t","c","w"};  // 제목, 내용, 작성자
+        String keyword = "1";           // 제목이나 내용이나 작성자에 1값을 찾는다.
 
         Pageable pageable = PageRequest.of(0,10, Sort.by("bno").descending());
 
-        Page<BoardListReplyCountDTO> result = boardRepository.searchWithReplyCount(types,keyword,pageable);
+        Page<BoardListReplyCountDTO> result = boardRepository.searchWithReplyCount(types, keyword, pageable);
 
         log.info("전체 게시물 수 : " + result.getTotalElements());  // 20
         log.info("총 페이지 수 : " + result.getTotalPages());       // 2
@@ -307,9 +307,7 @@ public class BoardRepositoryTests {
         log.info("시작페이지 여부 : " + result.isFirst());         // true
 
         result.getContent().forEach(board -> log.info(board));
-        // BoardListReplyCountDTO(bno=100, title=제목...100(수정테스트), writer=user0, regDate=2025-07-22T11:11:30.004590, replyCount=3)
-
+        // BoardListReplyCountDTO(bno=100, title=제목...100(수정테스트), writer=user0, regDate=2025-07-22T11:11:46.002548, replyCount=2)
     }
-
 
 } // 클래스 종료
